@@ -10,33 +10,73 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AttackChainRouteImport } from './routes/attack-chain'
+import { Route as DemoRouteImport } from './routes/demo'
+import { Route as LoginsRouteImport } from './routes/logins'
+import { Route as PhishingRouteImport } from './routes/phishing'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AttackChainRoute = AttackChainRouteImport.update({
+  id: '/attack-chain',
+  path: '/attack-chain',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DemoRoute = DemoRouteImport.update({
+  id: '/demo',
+  path: '/demo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginsRoute = LoginsRouteImport.update({
+  id: '/logins',
+  path: '/logins',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PhishingRoute = PhishingRouteImport.update({
+  id: '/phishing',
+  path: '/phishing',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/attack-chain': typeof AttackChainRoute
+  '/demo': typeof DemoRoute
+  '/logins': typeof LoginsRoute
+  '/phishing': typeof PhishingRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/attack-chain': typeof AttackChainRoute
+  '/demo': typeof DemoRoute
+  '/logins': typeof LoginsRoute
+  '/phishing': typeof PhishingRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/attack-chain': typeof AttackChainRoute
+  '/demo': typeof DemoRoute
+  '/logins': typeof LoginsRoute
+  '/phishing': typeof PhishingRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/attack-chain' | '/demo' | '/logins' | '/phishing'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/attack-chain' | '/demo' | '/logins' | '/phishing'
+  id: '__root__' | '/' | '/attack-chain' | '/demo' | '/logins' | '/phishing'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AttackChainRoute: typeof AttackChainRoute
+  DemoRoute: typeof DemoRoute
+  LoginsRoute: typeof LoginsRoute
+  PhishingRoute: typeof PhishingRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +88,43 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/attack-chain': {
+      id: '/attack-chain'
+      path: '/attack-chain'
+      fullPath: '/attack-chain'
+      preLoaderRoute: typeof AttackChainRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/demo': {
+      id: '/demo'
+      path: '/demo'
+      fullPath: '/demo'
+      preLoaderRoute: typeof DemoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/logins': {
+      id: '/logins'
+      path: '/logins'
+      fullPath: '/logins'
+      preLoaderRoute: typeof LoginsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/phishing': {
+      id: '/phishing'
+      path: '/phishing'
+      fullPath: '/phishing'
+      preLoaderRoute: typeof PhishingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AttackChainRoute: AttackChainRoute,
+  DemoRoute: DemoRoute,
+  LoginsRoute: LoginsRoute,
+  PhishingRoute: PhishingRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
