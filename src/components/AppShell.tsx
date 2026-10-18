@@ -64,7 +64,7 @@ export function SevBadge({ s }: { s: string }) {
     medium: "bg-sev-medium/15 text-sev-medium border-sev-medium/40",
     low: "bg-sev-low/15 text-sev-low border-sev-low/40",
   };
-  return <span className={`inline-flex rounded-md border px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide ${map[s] ?? map.low}`}>{s}</span>;
+  return <span className={`inline-flex rounded-md border px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide ${map[s] ?? map['low']}`}>{s}</span>;
 }
 
 export function Btn({ children, variant = "primary", className = "", ...p }: React.ButtonHTMLAttributes<HTMLButtonElement> & { variant?: "primary" | "ghost" }) {

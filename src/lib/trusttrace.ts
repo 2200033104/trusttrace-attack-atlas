@@ -103,8 +103,9 @@ export function analyzeLogins(logins: LoginEvent[]): LoginFinding[] {
     if (foreign.length)
       out.push({ rule: "Unusual location", user, weight: 15, evidence: `Logins from ${[...new Set(foreign.map((f) => f.country))].join(", ")} (usual: ${HOME[user]})`, eventIds: foreign.map((f) => f.id) });
     for (let i = 0; i < sorted.length; i++) {
-      if (sorted[i].success && fails.length >= 3 && i >= 3 && sorted.slice(i - 3, i).every((e) => !e.success)) {
-        out.push({ rule: "Success after failure burst", user, weight: 30, evidence: `Successful login at ${fmt(sorted[i].time)} right after ${3}+ failures`, eventIds: [sorted[i].id] });
+      const cur = sorted[i]!;
+      if (cur.success && fails.length >= 3 && i >= 3 && sorted.slice(i - 3, i).every((e) => !e.success)) {
+        out.push({ rule: "Success after failure burst", user, weight: 30, evidence: `Successful login at ${fmt(cur.time)} right after 3+ failures`, eventIds: [cur.id] });
       }
     }
   }
@@ -197,7 +198,7 @@ export function correlate(events: SecurityEvent[], logins: LoginEvent[]): ChainR
     login_success: [30, "Successful login from the same unfamiliar IP/device right after failures"],
   };
   const steps = ev.map((e) => ({ event: e, contribution: reasons[e.type]?.[0] ?? 0, reason: reasons[e.type]?.[1] ?? "" }));
-  const span = (new Date(ev[ev.length - 1].time).getTime() - new Date(ev[0].time).getTime()) / 60000;
+  const span = (new Date(ev[ev.length - 1]!.time).getTime() - new Date(ev[0]!.time).getTime()) / 60000;
   const timeBonus = span <= 30 ? 10 : 0;
   const score = Math.min(100, steps.reduce((s, x) => s + x.contribution, 0) + timeBonus);
   return { score, steps, phish, loginFindings };
@@ -211,7 +212,7 @@ export const actions = {
     const chain = correlate(events, logins);
     const incidents = state.incidents.filter((i) => i.id !== "INC-2001");
     if (chain)
-      incidents.unshift({ id: "INC-2001", title: "Possible account takeover — a.sharma", severity: chain.score >= 75 ? "critical" : "high", status: "open", created: SCENARIO_EVENTS[3].time, score: chain.score, eventIds: SCENARIO_EVENTS.map((e) => e.id) });
+      incidents.unshift({ id: "INC-2001", title: "Possible account takeover — a.sharma", severity: chain.score >= 75 ? "critical" : "high", status: "open", created: SCENARIO_EVENTS[3]!.time, score: chain.score, eventIds: SCENARIO_EVENTS.map((e) => e.id) });
     set({ events, logins, incidents, chain, scenarioRan: true });
   },
   reset() {
