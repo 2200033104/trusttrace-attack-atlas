@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis, Cell } from "recharts";
-import { AppShell, Card, SevBadge, Btn, Empty } from "@/components/AppShell";
-import { useStore, actions, fmt, type IncidentStatus } from "@/lib/trusttrace";
+import { AppShell, Card, SevBadge, Empty, IncidentActions } from "@/components/AppShell";
+import { useStore, fmt } from "@/lib/trusttrace";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -18,17 +18,6 @@ export const Route = createFileRoute("/")({
 });
 
 const SEVS = ["critical", "high", "medium", "low"] as const;
-
-export function IncidentActions({ id, status }: { id: string; status: IncidentStatus }) {
-  if (status === "resolved") return <span className="text-xs text-sev-low">Resolved</span>;
-  return (
-    <div className="flex flex-wrap gap-1.5">
-      {status === "open" && <Btn variant="ghost" className="px-2 py-1 text-xs" onClick={() => actions.setStatus(id, "acknowledged")}>Acknowledge</Btn>}
-      {status !== "investigating" && <Btn variant="ghost" className="px-2 py-1 text-xs" onClick={() => actions.setStatus(id, "investigating")}>Investigate</Btn>}
-      <Btn variant="ghost" className="px-2 py-1 text-xs" onClick={() => actions.setStatus(id, "resolved")}>Resolve</Btn>
-    </div>
-  );
-}
 
 function Dashboard() {
   const s = useStore();

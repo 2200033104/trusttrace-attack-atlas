@@ -1,6 +1,7 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { LayoutDashboard, MailWarning, KeyRound, Workflow, PlayCircle, ShieldCheck, Menu, X } from "lucide-react";
 import { useState, type ReactNode } from "react";
+import { actions, type IncidentStatus } from "@/lib/trusttrace";
 
 const nav = [
   { to: "/", label: "Dashboard", icon: LayoutDashboard },
@@ -90,3 +91,15 @@ export function Empty({ title, children }: { title: string; children?: ReactNode
     </div>
   );
 }
+
+export function IncidentActions({ id, status }: { id: string; status: IncidentStatus }) {
+  if (status === "resolved") return <span className="text-xs text-sev-low">Resolved</span>;
+  return (
+    <div className="flex flex-wrap gap-1.5">
+      {status === "open" && <Btn variant="ghost" className="px-2 py-1 text-xs" onClick={() => actions.setStatus(id, "acknowledged")}>Acknowledge</Btn>}
+      {status !== "investigating" && <Btn variant="ghost" className="px-2 py-1 text-xs" onClick={() => actions.setStatus(id, "investigating")}>Investigate</Btn>}
+      <Btn variant="ghost" className="px-2 py-1 text-xs" onClick={() => actions.setStatus(id, "resolved")}>Resolve</Btn>
+    </div>
+  );
+}
+

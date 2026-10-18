@@ -1,8 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Mail, Link2, ShieldX, LogIn } from "lucide-react";
-import { AppShell, Card, Empty, ScoreRing, SevBadge, Btn } from "@/components/AppShell";
+import { AppShell, Card, Empty, ScoreRing, SevBadge, Btn, IncidentActions } from "@/components/AppShell";
 import { useStore, fmt } from "@/lib/trusttrace";
-import { IncidentActions } from "./index";
 
 export const Route = createFileRoute("/attack-chain")({
   head: () => ({
